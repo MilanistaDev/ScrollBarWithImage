@@ -41,3 +41,12 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
 }
+
+extension ViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // スクロールバーの色を半蔵門線パープルに
+        let verticalScrollIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+        verticalScrollIndicator.image = UIImage(named: "scrollBarImage")
+    }
+
+}
