@@ -44,9 +44,40 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // スクロールバーの色を半蔵門線パープルに
-        let verticalScrollIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
-        verticalScrollIndicator.image = UIImage(named: "scrollBarImage")
+        if #available(iOS 13.0, *) {
+            // スクロールバーに画像をセット
+            if let verticalScrollIndicator: UIView = scrollView.subviews.last {
+                // 追加した画像があれば削除
+                let subviews = verticalScrollIndicator.subviews
+                for subview in subviews {
+                    subview.removeFromSuperview()
+                }
+                let scrollBarImageView = UIImageView.init(frame: .zero)
+                scrollBarImageView.contentMode = .scaleToFill
+                scrollBarImageView.image = UIImage(named: "scrollBarImage")
+                scrollBarImageView.translatesAutoresizingMaskIntoConstraints = false
+                verticalScrollIndicator.addSubview(scrollBarImageView)
+                // ScrollBar いっぱいに画像を設置
+                scrollBarImageView.leadingAnchor.constraint(
+                    equalTo: verticalScrollIndicator.leadingAnchor,
+                    constant: 0.0
+                    ).isActive = true
+                scrollBarImageView.bottomAnchor.constraint(
+                    equalTo: verticalScrollIndicator.bottomAnchor,
+                    constant: 0.0
+                    ).isActive = true
+                scrollBarImageView.trailingAnchor.constraint(
+                    equalTo: verticalScrollIndicator.trailingAnchor,
+                    constant: 0.0
+                    ).isActive = true
+                scrollBarImageView.topAnchor.constraint(
+                    equalTo: verticalScrollIndicator.topAnchor,
+                    constant: 0.0
+                ).isActive = true
+            }
+        } else {
+            let verticalScrollIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+            verticalScrollIndicator.image = UIImage(named: "scrollBarImage")
+        }
     }
-
 }
